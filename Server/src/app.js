@@ -1,15 +1,24 @@
 const express = require("express");
+const connectDB = require("./config/database");
+const cookieParser = require("cookie-parser");
+
+const authRouter = require("./router/auth");
+const profileRouter = require("./router/profile");
+const requestRouter = require("./router/request");
+const userRouter = require("./router/user");
 
 const app = express();
 
-app.use("/hello", (req, res) => {
-  res.send("Hello from server");
-});
+app.use(express.json());
+app.use(cookieParser());
+app.use("/", authRouter, profileRouter, requestRouter, userRouter);
 
-app.use("/test", (req, res) => {
-  res.send("Test from server");
-});
-
-app.listen(7777, () => {
-  console.log("Server successfully running on Port 7777");
-});
+connectDB()
+  .then(() => {
+    app.listen(7777, () => {
+      console.log("Server successfully running on Port 7777");
+    });
+  })
+  .catch((err) => {
+    console.log("Error while connecting to database");
+  });
