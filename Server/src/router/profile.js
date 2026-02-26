@@ -28,7 +28,7 @@ router.patch("/profile/edit", userAuth, async (req, res) => {
 
     const updatingFields = Object.keys(req.body);
     const isEditValid = updatingFields.every((field) =>
-      allowedFields.includes(field)
+      allowedFields.includes(field),
     );
 
     if (!isEditValid) {
@@ -40,7 +40,7 @@ router.patch("/profile/edit", userAuth, async (req, res) => {
 
     res.send({ message: "User updated successfully" });
   } catch (err) {
-    res.status(401).message("Error:" + err.message);
+    res.status(401).send("Error:" + err.message);
   }
 });
 

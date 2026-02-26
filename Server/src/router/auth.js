@@ -23,7 +23,7 @@ router.post("/login", async (req, res) => {
     }
 
     res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000) });
-    res.send("Login successful");
+    res.json(user);
   } catch (err) {
     res.status(401).send("Error : " + err.message);
   }
@@ -42,11 +42,15 @@ router.post("/signup", async (req, res) => {
       undefined,
       {
         runValidators: true,
-      }
+      },
     );
 
     await user.save();
-    res.send("User saved successfully");
+
+    const token = user.createJWT();
+
+    res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000) });
+    res.json({ message: "User saved successfully", data: user });
   } catch (err) {
     res.status(400).send(`Bad request : ${err.message}`);
   }
@@ -69,7 +73,7 @@ router.patch("/forgotPassword", async (req, res) => {
     await User.findOneAndUpdate(
       { email: email },
       { password: passwordHash },
-      { runValidators: true }
+      { runValidators: true },
     );
     res.send("Password updated");
   } catch (err) {

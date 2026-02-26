@@ -43,6 +43,8 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
+      default:
+        "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
       validate(value) {
         if (!validator.isURL(value)) {
           throw new Error("Enter valid profile URL");
@@ -59,7 +61,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.methods.createJWT = function () {

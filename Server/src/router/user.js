@@ -5,7 +5,7 @@ const User = require("../model/User");
 
 const router = express.Router();
 
-const USER_ACCEPTED_DETAILS = "firstName lastName";
+const USER_ACCEPTED_DETAILS = "firstName lastName photoUrl age gender about";
 
 router.get("/user/requests/retrieved", userAuth, async (req, res) => {
   try {
@@ -15,6 +15,8 @@ router.get("/user/requests/retrieved", userAuth, async (req, res) => {
       toUserId: loggedInUser._id,
       status: "interested",
     }).populate("fromUserId", USER_ACCEPTED_DETAILS);
+
+    console.log("Requests", connections);
 
     res.status(200).json({
       message: "Successfully retrieved requests",
@@ -37,6 +39,8 @@ router.get("/user/connections", userAuth, async (req, res) => {
     })
       .populate("fromUserId", USER_ACCEPTED_DETAILS)
       .populate("toUserId", USER_ACCEPTED_DETAILS);
+
+    console.log("Connections", connections);
 
     const data = connections.map((connection) => {
       if (
