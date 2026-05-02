@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:7777";
+export const BASE_URL = "/api";
 export const LOGIN_ENDPOINT = "/login";
 export const LOGOUT_ENDPOINT = "/logout";
 export const FEED_ENDPOINT = "/user/feed";
